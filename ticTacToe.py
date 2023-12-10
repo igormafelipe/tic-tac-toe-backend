@@ -1,4 +1,4 @@
-EMPTY = ''
+EMPTY = ' '
 O = 'O'
 X = 'X'
 
@@ -45,10 +45,10 @@ class TicTacToeBoard:
             if self.board[0][i] == self.board[1][i] == self.board[2][i] != EMPTY:
                 return self.board[0][i]
             
-            if self.board[0][0] == self.board[1][1] == self.board[2][2] != EMPTY:
-                return self.board[0][0]
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] != EMPTY:
+            return self.board[0][0]
+        
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] != EMPTY:
+            return self.board[1][1]
             
-            if self.board[0][2] == self.board[1][1] == self.board[2][0] != EMPTY:
-                return self.board[1][1]
-            
-        return ''             
+        return EMPTY          

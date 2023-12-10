@@ -5,7 +5,7 @@ def main():
     board = TicTacToeBoard()
     
     while True:
-        for player in ['O', 'X']:
+        for player in ['X', 'O']:
             cell = input(f"{player} turn, format x,y: ")
             x, y = cell.split(',')
             
