@@ -10,19 +10,25 @@ def main():
             if next_board == 0: 
                 cell = input(f"{player} turn, format x,y,board: ")
                 x,y,board = cell.split(',')
-                next_board = board
+                next_board = bigBoard.make_move(int(x), int(y), player, int(board))
+                while next_board == -1:
+                    sleep(1)
+                    bigBoard.print_board()
+                    cell = input(f"{player} turn, format x,y,board: ")
+                    x, y, board = cell.split(',')
+                    next_board = bigBoard.make_move(int(x), int(y), player, int(board))
             else:
                 cell = input(f"{player} turn, format x,y: ")
                 x,y = cell.split(',')
-            
-            next_board = bigBoard.make_move(int(x), int(y), player, int(next_board))
-            while next_board == -1:
-                sleep(1)
-                bigBoard.print_board()
-                cell = input(f"{player} turn, format x,y,board: ")
-                x, y, board = cell.split(',')
-                next_board = bigBoard.make_move(int(x), int(y), player, int(next_board))
-            
+                original_board = next_board
+                next_board = bigBoard.make_move(int(x), int(y), player, int(original_board))
+                while next_board == -1:
+                    sleep(1)
+                    bigBoard.print_board()
+                    cell = input(f"{player} turn, format x,y,board: ")
+                    x, y, board = cell.split(',')
+                    next_board = bigBoard.make_move(int(x), int(y), player, int(original_board))
+                
             bigBoard.print_board()
             
             if bigBoard.check_winner() == player:

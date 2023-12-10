@@ -47,7 +47,7 @@ class BigTicTacToeBoard:
         if self.boards[board-1].check_winner() != EMPTY:
             return FREE_MOVE
         
-        return nextBoard
+        return nextBoard + 1
         
     def check_winner(self):
         for i in range(3):
