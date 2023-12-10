@@ -6,14 +6,14 @@ def main():
     
     while True:
         for player in ['X', 'O']:
-            cell = input(f"{player} turn, format x,y: ")
+            cell = input(f"{player} turn, format y,x: ")
             x, y = cell.split(',')
             
             while board.make_move(int(x), int(y), player) != True:
                 print("Invalid move")
                 sleep(1)
                 board.print_board()
-                cell = input(f"{player} turn, format x,y: ")
+                cell = input(f"{player} turn, format y,x: ")
                 x, y = cell.split(',')
             
             board.print_board()
