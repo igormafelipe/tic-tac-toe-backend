@@ -1,12 +1,21 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
 from gameManager import gameManager
+from flask_cors import CORS
+from flask_socketio import SocketIO
+# from flask_cors import CORS
+# from engineio.async_drivers import gevent
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder="./dist/static",
+            template_folder="./dist")
 manager = gameManager()
 
-@app.route('/')
+# Allow CORS for all routes under /
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+@app.route('/', methods=["GET", "POST"])
 def home():
-    return "Welcome to big tic tac toe"
+    return "<h1>Welcome to big tic tac toe<h1>"
 
 @app.route('/new_game')
 def new_game():
