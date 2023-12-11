@@ -12,7 +12,7 @@ class gameManager:
         code = ''.join(random.choices(string.ascii_uppercase +
                              string.digits, k=N))
         
-        while code not in self.games:
+        while code in self.games:
             code = self.generate_code()
         
         return code

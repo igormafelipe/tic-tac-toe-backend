@@ -70,6 +70,12 @@ class BigTicTacToeBoard:
     def check_draw(self):
         return EMPTY not in self.winners
     
+    def get_board(self):
+        boards = []
+        for board in self.boards:
+            boards.append(board.board_state())
+        return boards
+    
     # for now only print first 3 boards.
     def print_board(self):
         for i in range(3):
