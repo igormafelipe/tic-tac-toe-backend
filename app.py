@@ -30,7 +30,6 @@ rooms = {}
 # If you join a room, your symbol is automatically O
 @socketio.on('join_game')
 def join_game(data):
-    print("join_game\t", data, "\t", request.sid)
     id = data.get('id')
     user_id = request.sid
     if not id:
@@ -50,6 +49,14 @@ def join_game(data):
     else:
         emit("unable_to_join_game", to=user_id)
 
+@socketio.on('leave_game')
+def leave_game(data):
+    id = data.get('id')
+    
+    if id in rooms and rooms[id] == 2:
+        emit("player_left", id, to=id)
+        rooms[id] = 1
+
 @socketio.on('make_move')
 def update_board(data):
     x = data.get("x", None)
@@ -58,16 +65,34 @@ def update_board(data):
     player = data.get("player", "")
     game_id = data.get("game_id", "")
     
+    user_id = request.sid
+    
     if x == None or y == None or board == None or player == "" or game_id == "":
-        emit("board_update_failed", request.sid)
+        emit("board_update_failed", request.sid, to=user_id)
         return
-       
-    next_board = gameManager.games[game_id].make_move(x, y, player, board)
+        
+    next_board = manager.make_move(game_id, x, y, player, board)
+    if next_board == -2:
+        emit("board_update_failed", {"reason": "Invalid move"}, to=user_id)
+        return
+        
     emit("board_updated", data, to=game_id)
     
+    # If the next board is -1, then a board has been won
+    if next_board == -1:
+        emit("local_board_winner", {"board": board, "winner": player}, to=game_id)
+    
     next_player = "O" if player == "X" else "X"
-    turn_data = {"turn" : next_player, "board" : next_board}
+    turn_data = {"next_player" : next_player, "board" : next_board}
     emit("change_turn", turn_data, to=game_id)
+    
+    is_winner = manager.check_game_winner(game_id)
+    if is_winner in ["X", "O"]:
+        emit("game_winner", {"winner": is_winner}, to=game_id)
+        
+    is_draw = manager.check_game_draw(game_id)
+    if is_draw:
+        emit("game_draw", to=game_id)
 
 # End points
 @app.route('/', methods=["GET", "POST"])

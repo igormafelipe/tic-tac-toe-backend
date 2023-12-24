@@ -28,5 +28,21 @@ class gameManager:
             return
 
         self.games[code] = None
-            
         
+    def make_move(self, game_id, x, y, player, board):
+        if game_id not in self.games:
+            return -2
+        
+        return self.games[game_id].make_move(x, y, player, board)
+    
+    def check_game_winner(self, game_id):
+        if game_id not in self.games:
+            return -2
+        
+        return self.games[game_id].check_winner()
+    
+    def check_game_draw(self, game_id):
+        if game_id not in self.games:
+            return -2
+        
+        return self.games[game_id].check_draw()

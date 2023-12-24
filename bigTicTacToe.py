@@ -21,33 +21,36 @@ class BigTicTacToeBoard:
         - int: A number between 1 and 9, indicating the board where the next move must occur.
             Returns 0 if there's a free choice, -1 if an error occurred.
         """
-        FREE_MOVE = 0
-        ERROR = -1
+        FREE_MOVE = -1
+        ERROR = -2
         
-        if board < 1 or board > 9:
-            print(f"Invalid board location. Must be between 1 and 9")
+        if board < 0 or board > 8:
+            print(f"Invalid board location. Must be between 0 and 8")
             return ERROR
         
         if mark not in [O, X]:
             print(f"Invalid mark. Either O or X")
             return ERROR
         
-        if not self.boards[board-1].validate_move(x, y):
+        if not self.boards[board].validate_move(x, y):
             print(f"Move {x, y} is not valid")
             return ERROR
         
-        if self.boards[board-1].check_winner() != EMPTY:
+        if self.boards[board].check_winner() != EMPTY:
             print(f"This board already has a winner")
             return ERROR
     
-        self.boards[board-1].make_move(x, y, mark)
-        self.winners[board-1] = self.boards[board-1].check_winner()
+        self.boards[board].make_move(x, y, mark)
+        self.winners[board] = self.boards[board].check_winner()
             
-        nextBoard = x * 3 + y
-        if self.boards[board-1].check_winner() != EMPTY:
+        nextBoard = y * 3 + x
+        if self.boards[board].check_winner() != EMPTY:
             return FREE_MOVE
         
-        return nextBoard + 1
+        if self.winners[nextBoard] != EMPTY:
+            return FREE_MOVE
+        
+        return nextBoard
         
     def check_winner(self):
         for i in range(3):
