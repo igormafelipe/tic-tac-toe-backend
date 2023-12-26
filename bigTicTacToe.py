@@ -3,6 +3,7 @@ from ticTacToe import TicTacToeBoard
 O = 'O'
 X = 'X'
 EMPTY = ' '
+DRAW = 'D'
 
 # X always plays first
 class BigTicTacToeBoard:    
@@ -39,13 +40,15 @@ class BigTicTacToeBoard:
         if self.boards[board].check_winner() != EMPTY:
             print(f"This board already has a winner")
             return ERROR
-    
+
         self.boards[board].make_move(x, y, mark)
+        
+        if self.boards[board].check_draw():
+            self.winners[board] = DRAW
+        
         self.winners[board] = self.boards[board].check_winner()
             
         nextBoard = y * 3 + x
-        if self.boards[board].check_winner() != EMPTY:
-            return FREE_MOVE
         
         if self.winners[nextBoard] != EMPTY:
             return FREE_MOVE
@@ -70,8 +73,12 @@ class BigTicTacToeBoard:
             
         return EMPTY
     
+    def get_local_draws(self):
+        draw_boards = [i for i, board in enumerate(self.winners) if board == DRAW]
+        return draw_boards
+    
     def check_draw(self):
-        return EMPTY not in self.winners
+        return EMPTY not in self.winners and not self.check_winner()
     
     def get_board(self):
         boards = []

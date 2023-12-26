@@ -46,3 +46,9 @@ class gameManager:
             return -2
         
         return self.games[game_id].check_draw()
+    
+    def get_local_draws(self, game_id):
+        if game_id not in self.games:
+            return -2
+        
+        return self.games[game_id].get_local_draws()
