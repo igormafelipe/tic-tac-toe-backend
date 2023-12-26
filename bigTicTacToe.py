@@ -24,22 +24,24 @@ class BigTicTacToeBoard:
         """
         FREE_MOVE = -1
         ERROR = -2
+        LOCAL_BOARD_WIN = -3
         
+        winner = EMPTY
         if board < 0 or board > 8:
             print(f"Invalid board location. Must be between 0 and 8")
-            return ERROR
+            return ERROR, winner
         
         if mark not in [O, X]:
             print(f"Invalid mark. Either O or X")
-            return ERROR
+            return ERROR, winner
         
         if not self.boards[board].validate_move(x, y):
             print(f"Move {x, y} is not valid")
-            return ERROR
+            return ERROR, winner
         
         if self.boards[board].check_winner() != EMPTY:
             print(f"This board already has a winner")
-            return ERROR
+            return ERROR, winner
 
         self.boards[board].make_move(x, y, mark)
         
@@ -47,13 +49,14 @@ class BigTicTacToeBoard:
             self.winners[board] = DRAW
         
         self.winners[board] = self.boards[board].check_winner()
+        winner = self.winners[board]
             
         nextBoard = y * 3 + x
         
         if self.winners[nextBoard] != EMPTY:
-            return FREE_MOVE
+            return FREE_MOVE, winner
         
-        return nextBoard
+        return nextBoard, winner
         
     def check_winner(self):
         for i in range(3):

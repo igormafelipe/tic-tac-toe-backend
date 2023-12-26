@@ -71,7 +71,7 @@ def update_board(data):
         emit("board_update_failed", request.sid, to=user_id)
         return
         
-    next_board = manager.make_move(game_id, x, y, player, board)
+    next_board, winner = manager.make_move(game_id, x, y, player, board)
     if next_board == -2:
         emit("board_update_failed", {"reason": "Invalid move"}, to=user_id)
         return
@@ -79,8 +79,10 @@ def update_board(data):
     emit("board_updated", data, to=game_id)
     
     # If the next board is -1, then a board has been won
-    if next_board == -1:
-        emit("local_board_winner", {"board": board, "winner": player}, to=game_id)
+    # Not always actually.
+    # When a board is won, its not necessarely a free move.
+    if winner != " ":
+        emit("local_board_winner", {"board": board, "winner": winner}, to=game_id)
     
     next_player = "O" if player == "X" else "X"
     turn_data = {"next_player" : next_player, "board" : next_board}
