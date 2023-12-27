@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from gameManager import gameManager
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
+from engineio.async_drivers import gevent
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lol'
@@ -9,7 +10,7 @@ app.config['SECRET_KEY'] = 'lol'
 manager = gameManager()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(cors_allowed_origins="*", async_mode='eventlet')
+socketio = SocketIO(cors_allowed_origins="*")
 socketio.init_app(app)
 
 # Socketio functions
