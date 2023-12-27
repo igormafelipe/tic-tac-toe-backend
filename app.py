@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from gameManager import gameManager
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
-from engineio.async_drivers import gevent
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lol'
