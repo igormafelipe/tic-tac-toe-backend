@@ -1,8 +1,10 @@
+import os
+os.environ['EVENTLET_NO_GREENDNS'] = 'yes'
+
 from flask import Flask, jsonify, request
 from gameManager import gameManager
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
 
