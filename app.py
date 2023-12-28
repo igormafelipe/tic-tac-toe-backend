@@ -9,8 +9,8 @@ app = Flask(__name__)
 manager = gameManager()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(cors_allowed_origins="*")
-socketio.init_app(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+# socketio.init_app(app)
 
 # Socketio functions
 # user_id room: Used for private communications between server and user
