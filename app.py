@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from gameManager import gameManager
 from flask_socketio import SocketIO, emit, join_room
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 
@@ -123,4 +124,4 @@ def join_game():
     return jsonify({"status": "success", "message": "Successfully joined room " + room_id})
 
 if __name__ == '__main__':
-    socketio.run(app, port=5000)
+    socketio.run(app, port=os.environ.get('PORT', 5000))
