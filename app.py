@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 manager = gameManager()
 
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="https://big-tic-tac-toe-e4cee08571e7.herokuapp.com/")
 # socketio.init_app(app)
 
