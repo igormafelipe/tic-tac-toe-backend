@@ -29,6 +29,10 @@ def handle_disconnect():
 # Rooms can have at most 2 players
 rooms = {}
 
+@socketio.on_error()
+def chat_error_handler(e):
+    print('An error has occurred: ' + str(e))
+
 # User can only join a room that has 1 player in it.
 # If you join a room, your symbol is automatically O
 @socketio.on('join_game')
