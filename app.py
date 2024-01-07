@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 manager = gameManager()
 
-cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
-socketio = SocketIO(app, cors_allowed_origins=["*"])
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*")
 # socketio.init_app(app)
 
 # Socketio functions
