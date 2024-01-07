@@ -4,14 +4,14 @@ os.environ['EVENTLET_NO_GREENDNS'] = 'yes'
 from flask import Flask, jsonify, request
 from gameManager import gameManager
 from flask_socketio import SocketIO, emit, join_room
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
 manager = gameManager()
 
-cors = CORS(app, resources={r"/*": {"origins": ["https://tic-tac-toe-backend-54ecf5424b94.herokuapp.com", "https://localhost:5173"]}})
-socketio = SocketIO(app, cors_allowed_origins=["https://tic-tac-toe-backend-54ecf5424b94.herokuapp.com", "https://localhost:5173"])
+cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
+socketio = SocketIO(app, cors_allowed_origins=["*"])
 # socketio.init_app(app)
 
 # Socketio functions
@@ -31,6 +31,7 @@ rooms = {}
 # User can only join a room that has 1 player in it.
 # If you join a room, your symbol is automatically O
 @socketio.on('join_game')
+@cross_origin()
 def join_game(data):
     id = data.get('id')
     user_id = request.sid
@@ -52,6 +53,7 @@ def join_game(data):
         emit("unable_to_join_game", to=user_id)
 
 @socketio.on('leave_game')
+@cross_origin()
 def leave_game(data):
     id = data.get('id')
     
@@ -60,6 +62,7 @@ def leave_game(data):
         rooms[id] = 1
 
 @socketio.on('make_move')
+@cross_origin()
 def update_board(data):
     x = data.get("x", None)
     y = data.get("y", None)
@@ -104,12 +107,14 @@ def home():
     return "Welcome to the tic-tac-toe backend! This is a flask server."
 
 @app.route('/create_game', methods=["POST"])
+@cross_origin()
 def create_game():
     room_id = manager.create_game()
     rooms[room_id] = 0
     return jsonify({"status": "success", "room_id": room_id})
 
 @app.route('/join_game', methods=["POST"])
+@cross_origin()
 def join_game():
     request_data = request.get_json()
     room_id = request_data.get("room_id", None)
