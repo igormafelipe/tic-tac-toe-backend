@@ -18,10 +18,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # user_id room: Used for private communications between server and user
 
 @socketio.on('connect')
+@cross_origin()
 def handle_connect():
     emit('on_connect', 'connected')
     
 @socketio.on('disconnect')
+@cross_origin()
 def handle_disconnect():
     emit('on_disconnect', 'disconnected')
     
