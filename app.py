@@ -1,5 +1,5 @@
-import os
-os.environ['EVENTLET_NO_GREENDNS'] = 'yes'
+from gevent import monkey
+monkey.patch_all()
 
 from flask import Flask, jsonify, request
 from gameManager import gameManager
@@ -11,7 +11,7 @@ app = Flask(__name__)
 manager = gameManager()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
 # socketio.init_app(app)
 
 # Socketio functions
