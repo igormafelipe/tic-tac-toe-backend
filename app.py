@@ -1,3 +1,4 @@
+import os
 from gevent import monkey
 monkey.patch_all()
 
@@ -118,9 +119,9 @@ def join_game():
         return jsonify({"status": "failure", "message": "No room id provided"})
     
     if not room_id in rooms:
-        return jsonify({"status": "failure", "message": "Room does not exist"})
+        return jsonify({"status": "failure", "message": "Room does not exist", "rooms" : rooms})
     
-    if rooms[room_id] != 1:
+    if rooms[room_id] > 1:
         return jsonify({"status": "failure", "message": "Room is full"})
     
     return jsonify({"status": "success", "message": "Successfully joined room " + room_id})
