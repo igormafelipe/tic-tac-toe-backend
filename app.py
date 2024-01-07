@@ -108,7 +108,7 @@ def home():
 def create_game():
     room_id = manager.create_game()
     rooms[room_id] = 0
-    return jsonify({"status": "success", "room_id": room_id})
+    return jsonify({"status": "success", "room_id": room_id, "rooms" : rooms})
 
 @app.route('/join_game', methods=["POST"])
 def join_game():
