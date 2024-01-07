@@ -1,6 +1,4 @@
 import os
-from gevent import monkey
-monkey.patch_all()
 
 from flask import Flask, jsonify, request
 from gameManager import gameManager
@@ -12,7 +10,7 @@ app = Flask(__name__)
 manager = gameManager()
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent', transports=['websocket', 'polling'], logger=True, engineio_logger=True)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', transports=['websocket', 'polling'], logger=True, engineio_logger=True)
 # socketio.init_app(app)
 
 # Socketio functions
@@ -131,4 +129,4 @@ def join_game():
     return jsonify({"status": "success", "message": "Successfully joined room " + room_id})
 
 if __name__ == '__main__':
-    socketio.run(app, port=os.environ.get('PORT', 5000))
+    socketio.run(app, port=int(os.environ.get('PORT', 5000)))
